@@ -1,0 +1,218 @@
+// Frontend: HTML, CSS, and JavaScript for Real-Time Character Stats
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eonveil - Room System with Stats</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script defer src="script.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        #roomContainer, #loginContainer, #statsContainer { display: flex; flex-direction: column; align-items: center; }
+        input { margin: 5px; padding: 8px; }
+        button { padding: 8px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Eonveil</h1>
+
+<!-- Dice Roller UI (Hidden by Default) -->
+<div id="dice-roller-container" style="display: none;">
+    <h2>🎲 Dice Roller</h2>
+    <div class="dice-buttons">
+        <button onclick="rollDice(4)">D4</button>
+        <button onclick="rollDice(6)">D6</button>
+        <button onclick="rollDice(8)">D8</button>
+        <button onclick="rollDice(10)">D10</button>
+        <button onclick="rollDice(12)">D12</button>
+        <button onclick="rollDice(20)">D20</button>
+        <button onclick="rollDice(100)">D100</button>
+    </div>
+    <p id="roll-result">Result: 🎲</p>
+</div>
+
+
+<!-- Dice Roller JavaScript -->
+<script>
+    // const socket = io("http://localhost:3000"); // Connect to backend
+    function rollDice(sides) {
+    let username = localStorage.getItem("username") || "Player"; 
+    let roomCode = localStorage.getItem("roomCode"); // Ensure room code is stored when joining
+
+    if (!roomCode) {
+        alert("You must be in a room to use the Dice Roller!");
+        return;
+    }
+
+    // Generate local roll result (for animation)
+    let roll = Math.floor(Math.random() * sides) + 1;
+    let resultDisplay = document.getElementById("roll-result");
+
+    // Simulate Dice Roll Animation
+    resultDisplay.innerHTML = "Rolling... 🎲";
+    setTimeout(() => {
+        resultDisplay.innerHTML = `You rolled a D${sides}: ${roll} 🎲`;
+        // Send roll data to the server (syncs with others)
+        socket.emit("rollDice", { roomCode, sides, username });
+    }, 800);
+}
+
+// Ensure Dice Rolls Sync Across Players
+socket.on("diceRollResult", ({ username, sides, roll }) => {
+    let resultDisplay = document.getElementById("roll-result");
+    resultDisplay.innerHTML = `${username} rolled a D${sides}: ${roll} 🎲`;
+});
+
+
+// Receive and display roll results from other players
+socket.on("diceRollResult", ({ username, sides, roll }) => {
+    let resultDisplay = document.getElementById("roll-result");
+    resultDisplay.innerHTML = `${username} rolled a D${sides}: ${roll} 🎲`;
+});
+
+</script>
+
+    <div id="loginContainer">
+        <h2>Login / Register</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="register()">Register</button>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="roomContainer" style="display:none;">
+        <h2>Create or Join a Room</h2>
+        <input type="text" id="roomName" placeholder="Room Name">
+        <button onclick="createRoom()">Create Room</button>
+        <input type="text" id="roomCode" placeholder="Enter Room Code">
+        <button onclick="joinRoom()">Join Room</button>
+        <button onclick="toggleRoom()">Toggle Room Status</button>
+        <p id="roomStatus"></p>
+    </div>
+
+    <div id="statsContainer" style="display:none;">
+        <h2>Character Stats</h2>
+        <p>Health: <span id="health">100</span></p>
+        <p>Mana: <span id="mana">100</span></p>
+        <p>Stamina: <span id="stamina">100</span></p>
+        <button onclick="updateStats('health', -10)">Take Damage (-10 HP)</button>
+        <button onclick="updateStats('mana', -10)">Use Mana (-10)</button>
+        <button onclick="updateStats('stamina', -10)">Use Stamina (-10)</button>
+    </div>
+
+    <script>
+        const socket = io('http://localhost:3000');
+        let currentRoom = null;
+        let username = '';
+
+        function register() {
+            username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            fetch('http://localhost:3000/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            }).then(res => res.json()).then(data => alert(data.message));
+        }
+
+        function login() {
+            username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            }).then(res => res.json()).then(data => {
+                if (!data.error) {
+                    document.getElementById('loginContainer').style.display = 'none';
+                    document.getElementById('roomContainer').style.display = 'block';
+                } else {
+                    alert(data.error);
+                }
+            });
+        }
+
+        function createRoom() {
+    const roomName = document.getElementById('roomName').value;
+    socket.emit('createRoom', { roomName, dm: username });
+}
+
+socket.on('roomCreated', ({ roomCode, roomName }) => {
+    alert(`Room "${roomName}" created! Your Room Code: ${roomCode}`);
+
+    // Store the room code but DO NOT auto-join
+    localStorage.setItem("roomCode", roomCode);
+
+    // Instruct the user to manually enter the room code
+    alert("Now enter the room code manually to join.");
+});
+
+
+function joinRoom() {
+    const roomCode = document.getElementById('roomCode').value;
+    
+    if (!roomCode) {
+        alert("Please enter a valid room code.");
+        return;
+    }
+
+    socket.emit('joinRoom', { roomCode, username });
+
+    // Store the room code in localStorage
+    localStorage.setItem("roomCode", roomCode);
+}
+
+socket.on('playerJoined', ({ username, roomCode, players }) => {
+    if (localStorage.getItem("roomCode") === roomCode) {
+        alert(`${username} has joined room ${roomCode}!`);
+        
+        // Now show character stats since the user joined successfully
+        document.getElementById('statsContainer').style.display = 'block';
+    }
+});
+
+
+        function updateStats(stat, amount) {
+            let health = parseInt(document.getElementById('health').innerText);
+            let mana = parseInt(document.getElementById('mana').innerText);
+            let stamina = parseInt(document.getElementById('stamina').innerText);
+            
+            if (stat === 'health') health += amount;
+            if (stat === 'mana') mana += amount;
+            if (stat === 'stamina') stamina += amount;
+            
+            document.getElementById('health').innerText = health;
+            document.getElementById('mana').innerText = mana;
+            document.getElementById('stamina').innerText = stamina;
+
+            socket.emit('updateStats', { roomCode: currentRoom, username, stats: { health, mana, stamina } });
+        }
+
+        socket.on('statsUpdated', ({ username, stats }) => {
+            document.getElementById('health').innerText = stats.health;
+            document.getElementById('mana').innerText = stats.mana;
+            document.getElementById('stamina').innerText = stats.stamina;
+        });
+    </script>
+
+<script>
+    function updateUIForRoom() {
+        let roomCode = localStorage.getItem("roomCode");
+        let diceRollerContainer = document.getElementById("dice-roller-container");
+
+        if (roomCode) {
+            diceRollerContainer.style.display = "block"; // Show dice roller
+        } else {
+            diceRollerContainer.style.display = "none"; // Hide dice roller
+        }
+    }
+
+    // Run the function when the page loads
+    window.onload = updateUIForRoom;
+</script>
+
+</body>
+</html>

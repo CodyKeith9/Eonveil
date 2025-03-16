@@ -1,0 +1,30 @@
+/* Dice Roller Styling */
+#dice-roller-container {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    background: #1e1e2e;
+    border-radius: 10px;
+    color: white;
+}
+
+.dice-buttons button {
+    padding: 10px 15px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+}
+
+.dice-buttons button:hover {
+    background: #2563eb;
+}
+
+#roll-result {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}

@@ -1,0 +1,333 @@
+/* 🌌 Dark Fantasy Background */
+body {
+  background: url("/background.jpg") no-repeat center center fixed;
+  background-size: cover;
+  background-color: #121212; /* Fallback color */
+  color: #d4c7a1;
+  font-family: 'IM Fell English SC', serif;
+  text-align: center;
+}
+
+/* 🏰 Title & Headings */
+h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 3rem;
+  margin-top: 20px;
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+}
+
+h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  margin-top: 10px;
+}
+
+/* 📜 Enhanced Fantasy-Themed Containers */
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background: rgba(20, 20, 20, 0.95);
+  border-radius: 12px;
+  border: 3px solid #8b6f47;
+  box-shadow: 0 0 20px rgba(139, 111, 71, 0.8); /* Golden glow effect */
+} 
+
+/* ⚔️ Enhanced Fantasy-Themed Buttons */
+button {
+  background: linear-gradient(45deg, #5e442f, #9c6d38);
+  color: #f5ebd7;
+  border: 2px solid #8b6f47;
+  padding: 12px 20px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  font-family: 'Cinzel', serif;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+  background: linear-gradient(45deg, #9c6d38, #d4a76a);
+  transform: scale(1.05);
+  border-color: #d4a76a;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+}
+
+button:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+
+/* 🏹 Inputs */
+input {
+  padding: 10px;
+  margin: 12px;
+  border: 2px solid #9c6d38;
+  border-radius: 6px;
+  font-size: 18px;
+  text-align: center;
+  background: rgba(30, 30, 30, 0.9);
+  color: #d4c7a1;
+  font-family: 'IM Fell English SC', serif;
+}
+
+input::placeholder {
+  color: #b2a389;
+}
+
+/* 🔥 Magic Glow Effect on Hover */
+.magic-glow {
+  animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+  from {
+      text-shadow: 0 0 5px #d4a76a, 0 0 10px #9c6d38;
+  }
+  to {
+      text-shadow: 0 0 10px #d4a76a, 0 0 20px #9c6d38;
+  }
+}
+
+/* 📜 Character Stats UI */
+.stats-container {
+  background: rgba(30, 30, 30, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* 📜 Improved Stat Controls */
+.stat {
+  margin: 15px 0;
+}
+
+.stat label {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.stat-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.stat-controls button {
+  background: linear-gradient(45deg, #5e442f, #9c6d38);
+  color: #f5ebd7;
+  border: 2px solid #8b6f47;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-family: 'Cinzel', serif;
+}
+
+.stat-controls button:hover {
+  background: linear-gradient(45deg, #9c6d38, #d4a76a);
+  transform: scale(1.1);
+}
+
+.stat-controls input {
+  width: 50px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid #d4a76a;
+  background: rgba(30, 30, 30, 0.8);
+  color: #f5ebd7;
+  border-radius: 6px;
+  padding: 5px;
+}
+
+/* 👤 Username Input */
+.username-container {
+  background: rgba(30, 30, 30, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.username-container h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.username-container input {
+  padding: 10px;
+  font-size: 16px;
+  text-align: center;
+  border: 2px solid #d4a76a;
+  border-radius: 6px;
+  background: rgba(40, 40, 40, 0.8);
+  color: #f5ebd7;
+  width: 80%;
+}
+
+.username-container button {
+  margin-top: 10px;
+  background: linear-gradient(45deg, #5e442f, #9c6d38);
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* 🚪 Logout Button */
+.logout-button {
+  background: linear-gradient(45deg, #6e2b2b, #a94444);
+  color: white;
+  padding: 10px 15px;
+  border: 2px solid #d9534f;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+.logout-button:hover {
+  background: linear-gradient(45deg, #a94444, #d9534f);
+  transform: scale(1.1);
+}
+
+/* 📜 Fix Chat Box Scroll & Display */
+.chat-container {
+  background: rgba(20, 20, 20, 0.9);
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 15px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.chat-box {
+  height: 250px;
+  overflow-y: auto;
+  background: rgba(40, 40, 40, 0.8);
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-message {
+  padding: 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 14px;
+  color: white;
+}
+
+.chat-container form {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-container input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #d4a76a;
+  border-radius: 6px;
+  background: rgba(30, 30, 30, 0.8);
+  color: #f5ebd7;
+}
+
+.chat-container button {
+  background: linear-gradient(45deg, #5e442f, #9c6d38);
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.chat-container button:hover {
+  background: linear-gradient(45deg, #9c6d38, #d4a76a);
+}
+
+.room-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.room-section {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 15px;
+  border-radius: 10px;
+  width: 45%;
+  text-align: center;
+}
+
+.room-divider {
+  width: 5px;
+  background: rgba(255, 255, 255, 0.3);
+  height: 100px;
+  border-radius: 5px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #222;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+  width: 50%;
+}
+
+.close-modal {
+  margin-top: 10px;
+  background: red;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.room-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.room-section {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 15px;
+  border-radius: 10px;
+  width: 45%;
+  text-align: center;
+}
+
+.room-divider {
+  width: 5px;
+  background: rgba(255, 255, 255, 0.3);
+  height: 100px;
+  border-radius: 5px;
+}
