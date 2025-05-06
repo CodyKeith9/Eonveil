@@ -93,6 +93,10 @@ io.on("connection", (socket) => {
 });
 
 // Start the server
+app.get("/", (req, res) => {
+    res.send("🟢 Eonveil backend is live! Socket server is running.");
+});
+
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://192.168.68.62:${PORT}`);
