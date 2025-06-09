@@ -331,3 +331,18 @@ input::placeholder {
   height: 100px;
   border-radius: 5px;
 }
+
+/* ============================= */
+/*         Lore Board UI         */
+/* ============================= */
+
+.loreboard-container {
+  display: flex;
+  border: 2px solid #444;
+  border-radius: 10px;
+  padding: 16px;
+  background-color: #111;
+  color: #eee;
+}
+
+

@@ -7,6 +7,8 @@ import ChatBox from "./components/ChatBox";
 import "./index.css";
 import { io } from "socket.io-client";
 
+import LoreBoard from "./components/loreBoard";
+
 import socket from "./socket";
 
 function App() {
@@ -69,6 +71,8 @@ function App() {
                         <CharacterStats roomCode={roomCode} />
                         <ChatBox roomCode={roomCode} username={username} />
                     </div>
+
+                      <LoreBoard />
 
                     <div className="button-container">
                         <button className="leave-realm" onClick={() => {
