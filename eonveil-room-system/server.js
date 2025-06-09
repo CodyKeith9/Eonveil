@@ -5,10 +5,16 @@ const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
+const allowedOrigins = [
+    "https://CodyKeith9.github.io",  // GitHub Pages frontend
+    "https://eonveil.onrender.com"   // (Optional) Allow Render for testing if needed
+];
+
 const io = new Server(server, {
     cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
+        origin: allowedOrigins,
+        methods: ["GET", "POST"],
+        credentials: true
     }
 });
 
@@ -90,6 +96,11 @@ io.on("connection", (socket) => {
         io.emit("statsUpdate", playerStats);
         io.emit("usernamesUpdate", playerUsernames);
     });
+});
+
+// Handle real-time chat broadcasting
+socket.on("chatMessage", (data) => {
+    io.emit("chatMessage", data); // Send to everyone
 });
 
 // Start the server
