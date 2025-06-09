@@ -7,7 +7,7 @@ import ChatBox from "./components/ChatBox";
 import "./index.css";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3000"); // Update when deploying
+import socket from "./socket";
 
 function App() {
     const [username, setUsername] = useState(() => localStorage.getItem("username") || null);
