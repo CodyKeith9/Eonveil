@@ -7,8 +7,9 @@ const app = express();
 const server = http.createServer(app);
 
 const allowedOrigins = [
-    "https://CodyKeith9.github.io",  // GitHub Pages frontend
-    "https://eonveil.onrender.com"   // Optional: Render
+  "https://eonveil-frontend.onrender.com",
+  "https://CodyKeith9.github.io", 
+  "https://eonveil.onrender.com" 
 ];
 
 app.use(cors({
