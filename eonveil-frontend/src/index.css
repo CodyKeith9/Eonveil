@@ -332,10 +332,6 @@ input::placeholder {
   border-radius: 5px;
 }
 
-/* ============================= */
-/*         Lore Board UI         */
-/* ============================= */
-
 .loreboard-container {
   display: flex;
   border: 2px solid #444;
@@ -345,4 +341,54 @@ input::placeholder {
   color: #eee;
 }
 
+.loreboard-sidebar {
+  width: 200px;
+  margin-right: 16px;
+}
 
+.loreboard-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.loreboard-sidebar li {
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  border-radius: 6px;
+  background-color: #222;
+  transition: background-color 0.2s;
+}
+
+.loreboard-sidebar li:hover,
+.loreboard-sidebar li.active {
+  background-color: #444;
+  font-weight: bold;
+}
+
+.loreboard-content {
+  flex: 1;
+  padding: 10px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+}
+
+.lore-entry-card {
+  margin-bottom: 16px;
+  padding: 12px;
+  background-color: #222;
+  border-radius: 8px;
+  border: 1px solid #555;
+  text-align: left;
+}
+
+.lore-entry-card h4 {
+  margin-bottom: 8px;
+  color: #ffd700;
+}
+
+.lore-entry-card p {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
