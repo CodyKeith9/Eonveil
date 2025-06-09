@@ -4,6 +4,8 @@ import { loreCategories } from "../sampleLoreData";
 import "./LoreBoard.css"; // Optional, for styling
 
 function LoreBoard() {
+  console.log("✅ LoreBoard component has rendered.");
+
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [expandedEntries, setExpandedEntries] = useState({});
 
