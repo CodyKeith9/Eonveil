@@ -1,7 +1,7 @@
 // LoreBoard.jsx
 import React, { useState } from "react";
 import { loreCategories } from "../sampleLoreData";
-import "./LoreBoard.css"; // Optional, for styling
+import "../index.css";
 
 function LoreBoard() {
   console.log("✅ LoreBoard component has rendered.");
