@@ -5,10 +5,17 @@ const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
+
 const allowedOrigins = [
     "https://CodyKeith9.github.io",  // GitHub Pages frontend
-    "https://eonveil.onrender.com"   // (Optional) Allow Render for testing if needed
+    "https://eonveil.onrender.com"   // Optional: Render
 ];
+
+app.use(cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true
+}));
 
 const io = new Server(server, {
     cors: {
@@ -19,10 +26,10 @@ const io = new Server(server, {
 });
 
 // Store room data
-let rooms = {}; // Tracks players in each room
-let playerStats = {}; // Tracks player stats
-let playerUsernames = {}; // Tracks usernames
-let roomDMs = {}; // Tracks the DM for each room
+let rooms = {};
+let playerStats = {};
+let playerUsernames = {};
+let roomDMs = {};
 
 io.on("connection", (socket) => {
     console.log("A user connected:", socket.id);
@@ -37,12 +44,10 @@ io.on("connection", (socket) => {
     socket.on("createRoom", ({ roomCode, roomName }) => {
         if (!rooms[roomCode]) {
             rooms[roomCode] = [];
-            roomDMs[roomCode] = socket.id; // Assign the first player as DM*
+            roomDMs[roomCode] = socket.id;
         }
-    
+
         console.log(`✅ Room "${roomName}" created with code: ${roomCode}. DM assigned: ${socket.id}`);
-    
-        // Send confirmation to the frontend
         socket.emit("roomCreated", { roomCode, success: true });
     });
 
@@ -51,13 +56,10 @@ io.on("connection", (socket) => {
         if (rooms[roomCode]) {
             rooms[roomCode].push(socket.id);
             socket.join(roomCode);
-    
+
             console.log(`✅ User ${socket.id} joined room ${roomCode}`);
-    
-            // Send success confirmation to the frontend
             socket.emit("roomJoined", { success: true, roomCode });
-    
-            // Sync player data in the room
+
             io.to(roomCode).emit("updatePlayers", rooms[roomCode]);
             io.to(roomCode).emit("statsUpdate", playerStats);
             io.to(roomCode).emit("usernamesUpdate", playerUsernames);
@@ -66,7 +68,7 @@ io.on("connection", (socket) => {
             socket.emit("roomJoined", { success: false });
         }
     });
-    
+
     // Handle stat updates
     socket.on("updateStats", ({ roomCode, statType, value }) => {
         if (playerStats[socket.id]) {
@@ -75,7 +77,16 @@ io.on("connection", (socket) => {
         }
     });
 
-    // Handle user disconnecting
+    // ✅ Real-time chat broadcasting
+    socket.on("sendMessage", (data) => {
+        io.emit("receiveMessage", {
+            username: data.username,
+            message: data.message,
+            timestamp: new Date().toLocaleTimeString()
+        });
+    });
+
+    // Handle disconnecting
     socket.on("disconnect", () => {
         console.log("User disconnected:", socket.id);
 
@@ -83,7 +94,6 @@ io.on("connection", (socket) => {
             rooms[roomCode] = rooms[roomCode].filter((id) => id !== socket.id);
             io.to(roomCode).emit("updatePlayers", rooms[roomCode]);
 
-            // If the DM disconnects, reassign a new DM (first person in the room)
             if (roomDMs[roomCode] === socket.id && rooms[roomCode].length > 0) {
                 roomDMs[roomCode] = rooms[roomCode][0];
                 io.to(roomCode).emit("assignRole", { userId: roomDMs[roomCode], role: "DM*" });
@@ -96,11 +106,6 @@ io.on("connection", (socket) => {
         io.emit("statsUpdate", playerStats);
         io.emit("usernamesUpdate", playerUsernames);
     });
-});
-
-// Handle real-time chat broadcasting
-socket.on("chatMessage", (data) => {
-    io.emit("chatMessage", data); // Send to everyone
 });
 
 // Start the server
